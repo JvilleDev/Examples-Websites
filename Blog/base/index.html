@@ -185,18 +185,20 @@
                         content.textContent = post.description;
 
                         if (post.categories) {
-                            const categorys = JSON.parse(post.categories);
-                            const categorysContainer = document.createElement('small');
-                            categorysContainer.innerHTML = '<span style="font-weight:bold;">Categories: </span>';
-                            categorys.forEach(category => {
-                                const categoryElement = document.createElement('span');
-                                categoryElement.className = 'category';
-                                categoryElement.textContent = category.trim();
-                                categorysContainer.appendChild(categoryElement);
-                                categoriesContainer.innerHTML += ' ';
-                            });
-                            body.appendChild(categoriesContainer);
-                        }
+    const categories = JSON.parse(post.categories);
+    const categoriesContainer = document.createElement('small');
+    categoriesContainer.innerHTML = '<span style="font-weight:bold;">Categories: </span>';
+    
+    categories.forEach(category => {
+        const categoryElement = document.createElement('span');
+        categoryElement.className = 'category';
+        categoryElement.textContent = category.trim();
+        categoriesContainer.appendChild(categoryElement);
+        categoriesContainer.innerHTML += ' ';
+    });
+    
+    body.appendChild(categoriesContainer);
+}
 
                         body.appendChild(title);
                         body.appendChild(content);
