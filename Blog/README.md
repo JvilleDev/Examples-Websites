@@ -1,5 +1,5 @@
-# Blog Example
-## Español:
+# Español:
+## Blog de ejemplo
 
 Página de Ejemplo con Bootstrap, JavaScript, HTML y Node.
 
@@ -39,3 +39,46 @@ Página de Ejemplo con Bootstrap, JavaScript, HTML y Node.
 - Formulario de contacto mejorable
 ---
 ### Nota: Para aportes o ideas, puedes contactarme a mi e-mail: jvilledev@gmail.com
+
+---
+# English:
+## Blog Example
+
+Example Page with Bootstrap, JavaScript, HTML, and Node.
+
+---
+**Download dependencies with**
+`npm i`
+
+**Run the project with**
+`npm start` or `node index.js`
+
+**Access `http://localhost:3100` to view the Blog.**
+
+### Features
+- Home Page:
+	- jQuery search function
+	- Section for posts, descriptions, categories, and a featured image for each.
+
+	![Home Page](https://raw.githubusercontent.com/JvilleDev/Examples-Websites/main/Blog/screenshoots/home.png)
+- List of used categories
+![Categories](https://raw.githubusercontent.com/JvilleDev/Examples-Websites/main/Blog/screenshoots/categories.png)
+- Route to upload a new post at `/new`.
+	- ***Note: You must use Markdown, and the first "# Header" it finds will be used as the post title.***
+	- Upload an image to use as a featured image, which will be stored in `/static/images/...`
+
+	![](https://raw.githubusercontent.com/JvilleDev/Examples-Websites/main/Blog/screenshoots/new-post.png)
+- Page dedicated to **"About"**
+![](https://raw.githubusercontent.com/JvilleDev/Examples-Websites/main/Blog/screenshoots/about.png)
+- Contact form, which, when submitted, will open a modal with the user's entered information as confirmation.
+![](https://raw.githubusercontent.com/JvilleDev/Examples-Websites/main/Blog/screenshoots/contact-form.png)
+- Full-text search function at the `/search/:searchTerm` route.
+	- If no search term is provided, it will redirect the user to the main page.
+
+	![](https://raw.githubusercontent.com/JvilleDev/Examples-Websites/main/Blog/screenshoots/search.png)
+
+## Disadvantages
+- No authentication system
+- Room for improvement in the contact form
+---
+### Note: For contributions or ideas, you can contact me at my email: jvilledev@gmail.com
