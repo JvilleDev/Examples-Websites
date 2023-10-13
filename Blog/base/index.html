@@ -139,8 +139,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-
-        // INICIO DEL LOADER
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
@@ -151,11 +149,10 @@
                 }, 500);
             }, 500);
         });
-        // FIN DEL LOADER
         let totalPosts = 0;
         let numShowedPosts = 10;
-        function mostrarPublicaciones() {
-            const contenedor = document.getElementById('blog-posts');
+        function showPosts() {
+            const container = document.getElementById('blog-posts');
             fetch('posts.json')
                 .then(response => response.json())
                 .then(data => {
@@ -165,55 +162,46 @@
                         const card = document.createElement('div');
                         card.className = 'card mb-4';
                         if (post.image) {
-                            // Create a div container for the image
-                            const imagenContainer = document.createElement('div');
-                            imagenContainer.className = 'card-img-container';
-
-                            // Create the main image
-                            const imagenPrincipal = document.createElement('img');
-                            imagenPrincipal.className = 'card-img';
-                            imagenPrincipal.src = post.image;
-
-                            // Create a secondary image with the same src
-                            const imagenSecundaria = document.createElement('img');
-                            imagenSecundaria.className = 'card-img-secondary';
-                            imagenSecundaria.src = post.image;
-
-                            // Add images to the container
-                            imagenContainer.appendChild(imagenPrincipal);
-                            imagenContainer.appendChild(imagenSecundaria);
-
-                            // Add the image container to the card
+                            const imageContainer = document.createElement('div');
+                            imageContainer.className = 'card-img-container';
+                            const firstImage = document.createElement('img');
+                            firstImage.className = 'card-img';
+                            firstImage.src = post.image;
+                            const secondImage = document.createElement('img');
+                            secondImage.className = 'card-img-secondary';
+                            secondImage.src = post.image;
+                            imageContainer.appendChild(firstImage);
+                            imageContainer.appendChild(secondImage);
                             card.setAttribute('data-id', post.id);
-                            card.appendChild(imagenContainer);
+                            card.appendChild(imageContainer);
                         }
                         const body = document.createElement('div');
                         body.className = 'card-body';
                         const title = document.createElement('h5');
                         title.className = 'card-title';
                         title.textContent = post.name;
-                        const contenido = document.createElement('p');
-                        contenido.className = 'card-text';
-                        contenido.textContent = post.description;
+                        const content = document.createElement('p');
+                        content.className = 'card-text';
+                        content.textContent = post.description;
 
                         if (post.categories) {
-                            const categorias = JSON.parse(post.categories); // Convierte el JSON en un array de categorías
-                            const categoriasContainer = document.createElement('small');
-                            categoriasContainer.innerHTML = '<span style="font-weight:bold;">Categories: </span>';
-                            categorias.forEach(categoria => {
-                                const categoriaElement = document.createElement('span');
-                                categoriaElement.className = 'category';
-                                categoriaElement.textContent = categoria.trim();
-                                categoriasContainer.appendChild(categoriaElement);
-                                categoriasContainer.innerHTML += ' ';
+                            const categorys = JSON.parse(post.categories);
+                            const categorysContainer = document.createElement('small');
+                            categorysContainer.innerHTML = '<span style="font-weight:bold;">Categories: </span>';
+                            categorys.forEach(category => {
+                                const categoryElement = document.createElement('span');
+                                categoryElement.className = 'category';
+                                categoryElement.textContent = category.trim();
+                                categorysContainer.appendChild(categoryElement);
+                                categoriesContainer.innerHTML += ' ';
                             });
-                            body.appendChild(categoriasContainer);
+                            body.appendChild(categoriesContainer);
                         }
 
                         body.appendChild(title);
-                        body.appendChild(contenido);
+                        body.appendChild(content);
                         card.appendChild(body);
-                        contenedor.appendChild(card);
+                        container.appendChild(card);
                     });
 
                     applyLinks();
@@ -230,7 +218,7 @@
         }
 
         function loadMorePosts() {
-            const contenedor = document.getElementById('blog-posts');
+            const container = document.getElementById('blog-posts');
             fetch('posts.json')
                 .then(response => response.json())
                 .then(data => {
@@ -240,55 +228,44 @@
                         const card = document.createElement('div');
                         card.className = 'card mb-4';
                         if (post.image) {
-                            // Create a div container for the image
-                            const imagenContainer = document.createElement('div');
-                            imagenContainer.className = 'card-img-container';
-
-                            // Create the main image
-                            const imagenPrincipal = document.createElement('img');
-                            imagenPrincipal.className = 'card-img';
-                            imagenPrincipal.src = post.image;
-
-                            // Create a secondary image with the same src
-                            const imagenSecundaria = document.createElement('img');
-                            imagenSecundaria.className = 'card-img-secondary';
-                            imagenSecundaria.src = post.image;
-
-                            // Add images to the container
-                            imagenContainer.appendChild(imagenPrincipal);
-                            imagenContainer.appendChild(imagenSecundaria);
-
-                            // Add the image container to the card
+                            const imageContainer = document.createElement('div');
+                            imageContainer.className = 'card-img-container';
+                            const firstImage = document.createElement('img');
+                            firstImage.className = 'card-img';
+                            firstImage.src = post.image;
+                            const secondImage = document.createElement('img');
+                            secondImage.className = 'card-img-secondary';
+                            secondImage.src = post.image;
+                            imageContainer.appendChild(firstImage);
+                            imageContainer.appendChild(secondImage);
                             card.setAttribute('data-id', post.id);
-                            card.appendChild(imagenContainer);
+                            card.appendChild(imageContainer);
                         }
                         const body = document.createElement('div');
                         body.className = 'card-body';
                         const title = document.createElement('h5');
                         title.className = 'card-title';
                         title.textContent = post.name;
-                        const contenido = document.createElement('p');
-                        contenido.className = 'card-text';
-                        contenido.textContent = post.description;
-
+                        const content = document.createElement('p');
+                        content.className = 'card-text';
+                        content.textContent = post.description;
                         if (post.categories) {
-                            const categorias = post.categories.split(',');
-                            const categoriasContainer = document.createElement('small');
-                            categoriasContainer.innerHTML = '<span style="font-weight:bold;">Categories: </span>';
-                            categorias.forEach(categoria => {
-                                const categoriaElement = document.createElement('span');
-                                categoriaElement.className = 'category';
-                                categoriaElement.textContent = categoria.trim();
-                                categoriasContainer.appendChild(categoriaElement);
-                                categoriasContainer.innerHTML += ' ';
+                            const categories = post.categories.split(',');
+                            const categoriesContainer = document.createElement('small');
+                            categoriesContainer.innerHTML = '<span style="font-weight:bold;">Categories: </span>';
+                            categories.forEach(category => {
+                                const categoryElement = document.createElement('span');
+                                categoryElement.className = 'category';
+                                categoryElement.textContent = category.trim();
+                                categoriesContainer.appendChild(categoryElement);
+                                categoriesContainer.innerHTML += ' ';
                             });
-                            body.appendChild(categoriasContainer);
+                            body.appendChild(categoriesContainer);
                         }
-
                         body.appendChild(title);
-                        body.appendChild(contenido);
+                        body.appendChild(content);
                         card.appendChild(body);
-                        contenedor.appendChild(card);
+                        container.appendChild(card);
                     });
 
                     applyLinks();
@@ -302,8 +279,7 @@
                 });
         }
         document.getElementById('load-more-button').addEventListener('click', loadMorePosts);
-
-        mostrarPublicaciones();
+        showPosts();
         function applyLinks() {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
@@ -322,7 +298,6 @@
                 $('.card').hide();
                 $('.card:contains(' + searchText + ')').show();
             } else {
-                // Muestra todos los elementos si el término de búsqueda está en blanco o contiene menos de dos caracteres
                 $('.card').show();
             }
             const loadMore = document.getElementById('load-more');
@@ -332,22 +307,16 @@
                 loadMore.style.display = 'none';
             }
         }
-
         $('#search-input').on('input', function () {
             const searchText = $(this).val().toLowerCase();
             filterPosts(searchText);
         });
-
-
         $.expr[':'].contains = $.expr.createPseudo(function (text) {
             return function (element) {
                 return $(element).text().toLowerCase().includes(text);
             };
         });
-
     </script>
-
-
 </body>
 
 </html>

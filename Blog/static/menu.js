@@ -1,4 +1,3 @@
-        // Cargar el menú desde menu.html usando JavaScript
         const menuContainer = document.getElementById('menu-container');
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'menu', true);

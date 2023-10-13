@@ -32,8 +32,6 @@ app.get("/search/:searchTerm", (req, res) => {
           post.content.toLowerCase().includes(searchTerm)
         );
       });
-
-      // Pasa el término de búsqueda como variable a la vista
       res.render("search", { results, searchTerm });
     } catch (err) {
       console.error(err);
@@ -54,21 +52,19 @@ app.post("/new-post", upload.single("image"), (req, res) => {
   const markdownContent = req.body.markdownContent;
   const postDescription = req.body.description;
   const postCategories = req.body.categories;
-  const imageFile = req.file; // Obtener información de la imagen subida
+  const imageFile = req.file;
 
   if (!imageFile) {
     return res.status(400).send("No se ha proporcionado una imagen");
   }
-
-  // Función para extraer el título del contenido Markdown
   function extractTitle(markdownContent) {
     const lines = markdownContent.split("\n");
     for (let line of lines) {
       if (line.trim().startsWith("# ")) {
-        return line.trim().substring(2); // Eliminar el símbolo '#' y los espacios
+        return line.trim().substring(2);
       }
     }
-    return "Título no encontrado"; // Título predeterminado si no se encuentra uno
+    return "Título no encontrado";
   }
 
   const postTitle = extractTitle(markdownContent);
@@ -95,8 +91,6 @@ app.post("/new-post", upload.single("image"), (req, res) => {
           return res.status(500).send('Error al leer el archivo "posts.json"');
         }
         let indexedPosts = JSON.parse(data);
-
-        // Obtener la ruta relativa de la imagen
         const imagePath = path.join("static", "images", imageFile.filename);
 
         indexedPosts.push({
@@ -105,7 +99,7 @@ app.post("/new-post", upload.single("image"), (req, res) => {
           categories: postCategories,
           content: markdownContent,
           id: nextPostNumber,
-          image: "\\" + imagePath, // Agregar la ruta de la imagen al JSON
+          image: "\\" + imagePath,
         });
 
         fs.writeFile(

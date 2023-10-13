@@ -77,8 +77,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap Modal -->
     <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -100,13 +98,11 @@
             </div>
         </div>
     </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/static/menu.js"></script>
     <script>
-        // INICIO DEL LOADER
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
@@ -117,8 +113,6 @@
                 }, 500);
             }, 500);
         });
-        // FIN DEL LOADER
-
     </script>
     <script>
         $(document).ready(function () {
@@ -129,13 +123,9 @@
                 const user = formData.find(field => field.name === 'firstName').value + ' ' + formData.find(field => field.name === 'lastName').value;
                 const email = formData.find(field => field.name === 'email').value;
                 const message = formData.find(field => field.name === 'message').value;
-
-                // Set the modal content
                 $('#modalUserName').text(user).css('font-weight', 'bold');
                 $('#modalUserEmail').text(email).css('font-weight', 'bold');
                 $('#modalUserMessage').text(message).css('font-weight', 'bold');
-
-                // Show the modal
                 $('#confirmationModal').modal('show');
             });
         });

@@ -185,8 +185,6 @@
                         const markdownText = await response.text();
                         const html_code = md.render(markdownText);
                         document.getElementById('post-content').innerHTML = html_code;
-
-                        // Obtener la descripción del post desde "posts.json"
                         fetch('posts.json')
                             .then(response => response.json())
                             .then(data => {
