@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JvilleDev's Blog - Categories</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        #preloader {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #DD403A;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #343a40;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-button:start {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-button:end {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-button:horizontal {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-button:end:horizontal {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+    <div id="menu-container"></div>
+    <div class="container mt-4">
+        <h1>Categories</h1>
+        <ul id="category-list" class="list-group"></ul>
+    </div>
+    <script src="/static/menu.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 500);
+        });
+
+        // Function to fetch and process the posts.json file
+        function fetchPosts() {
+    fetch('posts.json')
+        .then(response => response.json())
+        .then(data => {
+            const categories = {};
+
+            // Iterate through posts and count categories
+            data.forEach(post => {
+                const postCategories = JSON.parse(post.categories); // Convierte el JSON en un array de categorías
+                postCategories.forEach(category => {
+                    if (categories[category]) {
+                        categories[category] += 1;
+                    } else {
+                        categories[category] = 1;
+                    }
+                });
+            });
+
+            // Populate the list of categories
+            const categoryList = document.getElementById('category-list');
+            for (const category in categories) {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                const link = document.createElement('a');
+                link.href = `/search/${category}`;
+                link.textContent = `${category} (${categories[category]})`;
+                listItem.appendChild(link);
+                categoryList.appendChild(listItem);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading posts:', error);
+        });
+}
+
+        fetchPosts();
+    </script>
+</body>
+
+</html>

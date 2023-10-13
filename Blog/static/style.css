@@ -1,0 +1,35 @@
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #343a40;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-button:start {
+    display: none;
+}
+
+::-webkit-scrollbar-button:end {
+    display: none;
+}
+
+::-webkit-scrollbar-button:horizontal {
+    display: none;
+}
+
+::-webkit-scrollbar-button:end:horizontal {
+    display: none;
+}
+
+.highlight {
+    background-color: yellow;
+    border-radius: 0.5rem;
+    padding: 0.2rem;
+    font-weight: bold;
+}
