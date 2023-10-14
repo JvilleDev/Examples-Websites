@@ -229,7 +229,6 @@
             margin: 0;
         }
 
-        /* Estilo para los elementos de lista */
         ul#file-list {
             list-style-type: none;
             padding: 0;
@@ -255,15 +254,11 @@
         }
 
 
-        /* Estilo para el menú de clic derecho personalizado */
         .custom-context-menu {
             position: absolute;
             background-color: var(--secondarycolor);
-            /* Utiliza la variable de color primario */
             border: 1px solid var(--secondarycolor);
-            /* Utiliza la variable de color secundario para el borde */
             border-radius: 0.5rem;
-            /* Añade bordes redondeados */
             padding: 0.5rem;
             z-index: 1000;
             display: none;
@@ -278,15 +273,13 @@
             background-color: transparent;
             cursor: pointer;
             color: white;
-            /* Utiliza el color secundario para el texto de los botones */
         }
 
         .custom-context-menu button:hover {
             background-color: white;
-            /* Utiliza el color secundario cuando se pasa el mouse sobre un botón */
             color: var(--secondarycolor);
-            /* Cambia el color del texto al pasar el mouse para que sea más legible */
         }
+
         .menu {
             position: sticky;
             top: 0;

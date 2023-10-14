@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Notas</title>
+    <title>Markdown Notes</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.2/markdown-it.min.js"
         integrity="sha512-ohlWmsCxOu0bph1om5eDL0jm/83eH09fvqLDhiEdiqfDeJbEvz4FSbeY0gLJSVJwQAp0laRhTXbUQG+ZUuifUQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -28,13 +28,13 @@
 
             <div id="customContextMenu" class="custom-context-menu">
                 <button onclick="saveMarkdown()">
-                    <i class="fas fa-save"></i>Guardar</button>
-                <button onclick="verFull()"><i class="fa-solid fa-display"></i>Pantalla Completa</button>
+                    <i class="fas fa-save"></i>Save</button>
+                <button onclick="verFull()"><i class="fa-solid fa-display"></i>Full Screen</button>
                 <button onclick="downloadPdf()">
-                    <i class="fa fa-file-pdf"></i> Descargar PDF
+                    <i class="fa fa-file-pdf"></i> Download PDF
                 </button>
                 <select id="fileDropdown">
-                    <option value="" disabled selected>Seleccionar Archivo</option>
+                    <option value="" disabled selected>Select File</option>
                 </select>
             </div>
 
@@ -44,14 +44,13 @@
         <div style="flex: 1; padding: 10px;">
             <h2 class="title">
                 <i class="fa fa-file-text"></i>
-                Vista Previa
+                Preview
             </h2>
             <div id="markdown-preview" class="scrollbar"></div>
         </div>
     </div>
 
     <script>
-        // Función para actualizar la vista previa de Markdown
         function updatePreview() {
             const markdownInput = document.getElementById("markdown-input").value;
             const markdownPreview = document.getElementById("markdown-preview");
@@ -60,34 +59,26 @@
 
             markdownPreview.innerHTML = html;
         }
-
-        // Escuchar cambios en el textarea y actualizar la vista previa
         document.getElementById("markdown-input").addEventListener("input", updatePreview);
-
         function downloadPdf() {
             const markdownPreviewContent = document.getElementById("markdown-preview").innerHTML;
-
-            // Obtener el nombre del archivo del primer h1
             const firstH1 = markdownPreviewContent.match(/<h1[^>]*>([^<]+)<\/h1>/i);
-            const fileName = firstH1 ? firstH1[1] : "documento.pdf"; // Si no se encuentra un h1, usa "documento.pdf" como nombre predeterminado
-
-            // Crear un objeto JSON con el contenido HTML
+            const fileName = firstH1 ? firstH1[1] : "documento.pdf";
             const requestData = { htmlContent: markdownPreviewContent };
-            console.log(requestData); // Verifica que requestData tenga datos
-
+            console.log(requestData);
             fetch("/download", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json" // Establecer el tipo de contenido como JSON
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(requestData) // Convertir el objeto JSON a una cadena
+                body: JSON.stringify(requestData)
             })
                 .then(response => response.blob())
                 .then(blob => {
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = fileName; // Establece el nombre del archivo según el h1
+                    a.download = fileName;
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
@@ -96,26 +87,21 @@
                     console.error('Error al descargar PDF:', error);
                 });
         }
-
         function saveMarkdown() {
             const markdownInputContent = document.getElementById("markdown-input").value;
-
-            // Crear un objeto JSON con el contenido Markdown
             const requestData = { markdownContent: markdownInputContent };
-            console.log(requestData); // Verifica que requestData tenga datos
-
+            console.log(requestData);
             fetch("/new", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json" // Establecer el tipo de contenido como JSON
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(requestData) // Convertir el objeto JSON a una cadena
+                body: JSON.stringify(requestData)
             })
                 .then(response => {
                     if (response.status === 200) {
                         initializePage();
                         console.log('Markdown guardado exitosamente');
-                        // Puedes realizar alguna acción adicional aquí si es necesario
                     } else {
                         console.error('Error al guardar el Markdown:', response.statusText);
                     }
@@ -125,11 +111,8 @@
                 });
         }
         function initializePage() {
-            // Obtener una referencia al dropdown y al textarea
             const fileDropdown = document.getElementById('fileDropdown');
             const markdownInput = document.getElementById('markdown-input');
-
-            // Cargar la lista de archivos disponibles en el dropdown
             fetch('/view')
                 .then(response => response.json())
                 .then(files => {
@@ -143,17 +126,12 @@
                 .catch(error => {
                     console.error('Error al cargar la lista de archivos:', error);
                 });
-
-            // Función para cargar el contenido del archivo seleccionado en el textarea
             function loadFileContent() {
                 const selectedFileName = fileDropdown.value;
-
                 if (selectedFileName) {
-                    // Hacer una solicitud para obtener el contenido del archivo seleccionado
                     fetch(`/view/${selectedFileName}`)
                         .then(response => response.text())
                         .then(content => {
-                            // Colocar el contenido en el textarea
                             markdownInput.value = content;
                             updatePreview();
                         })
@@ -162,8 +140,6 @@
                         });
                 }
             }
-
-            // Asignar la función loadFileContent() al evento onchange del dropdown
             fileDropdown.addEventListener('change', loadFileContent);
         }
 
@@ -171,61 +147,48 @@
         function verFull() {
             const selectedFileName = fileDropdown.value;
             const newTab = window.open(`/ver?name=${selectedFileName}`, '_blank');
-            newTab.focus(); // Hacer foco en la nueva ventana o pestaña
+            newTab.focus();
         }
-        // Inicialmente, actualiza la vista previa
         updatePreview();
-        // Llamar a la función initializePage() cuando se carga el script
         initializePage();
         const customContextMenu = document.getElementById('customContextMenu');
-
-        // Mostrar el menú en respuesta a un clic derecho
         document.addEventListener('contextmenu', (e) => {
-            e.preventDefault(); // Previene el menú de clic derecho predeterminado del navegador
-            customContextMenu.style.left = e.clientX + 'px'; // Posición horizontal del menú
-            customContextMenu.style.top = e.clientY + 'px'; // Posición vertical del menú
-            customContextMenu.style.display = 'block'; // Muestra el menú
+            e.preventDefault();
+            customContextMenu.style.left = e.clientX + 'px';
+            customContextMenu.style.top = e.clientY + 'px';
+            customContextMenu.style.display = 'block'
         });
-
-        // Ocultar el menú al hacer clic en cualquier parte del documento
         document.addEventListener('click', () => {
             customContextMenu.style.display = 'none';
         });
-
-        // Detiene la propagación del evento click dentro del menú para evitar que se oculte inmediatamente
         customContextMenu.addEventListener('click', (e) => {
             e.stopPropagation();
         });
         document.addEventListener("keydown", function (event) {
             if (event.ctrlKey && event.key === "s") {
-                event.preventDefault(); // Evita la descarga de la página
-                saveMarkdown(); // Llama a la función saveMarkdown
+                event.preventDefault();
+                saveMarkdown();
             }
         });
-        document.addEventListener("keydown", function(event) {
-        if (event.ctrlKey && event.key === "p") {
-            event.preventDefault(); // Evita la descarga de la página
-            downloadPdf(); // Llama a la función saveMarkdown
-        }
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && event.key === "p") {
+                event.preventDefault();
+                downloadPdf();
+            }
         });
         document.addEventListener("keydown", function (event) {
             if (event.key === "F11") {
-                event.preventDefault(); // Evita el modo pantalla completa
-                verFull(); // Llama a la función verFull
+                event.preventDefault();
+                verFull();
             }
         });
         const markdownInput = document.getElementById("markdown-input");
         const markdownContent = document.getElementById("markdown-preview");
 
-        // Agrega un event listener para el evento "scroll" en el primer contenedor (textarea)
         markdownInput.addEventListener("scroll", function () {
-            // Sincroniza el desplazamiento del segundo contenedor con el primero
             markdownContent.scrollTop = markdownInput.scrollTop;
         });
-
-        // Agrega un event listener para el evento "scroll" en el segundo contenedor (div)
         markdownContent.addEventListener("scroll", function () {
-            // Sincroniza el desplazamiento del primer contenedor con el segundo
             markdownInput.scrollTop = markdownContent.scrollTop;
         });
 

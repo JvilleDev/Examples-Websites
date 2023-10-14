@@ -4,32 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Nota</title>
+    <title>Open Note</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <style>
-            .home:hover{
-                color: var(--primarycolor);
-                background-color: var(--secondarycolor);
-            }
-
-        </style>
+    <style>
+        .home:hover {
+            color: var(--primarycolor);
+            background-color: var(--secondarycolor);
+        }
+    </style>
 </head>
 
 <body>
     <div class="menu">
         <button onclick="redirectToHome()" style="margin-bottom: 1rem;display: contents;" class="home">
-        <i class="fa-solid fa-backward"></i>
-        INICIO</button>
+            <i class="fa-solid fa-backward"></i>
+            INICIO</button>
         <select id="fileDropdown" style="margin-left: 1rem;">
-            <option value="" disabled selected>Seleccionar Archivo</option>
+            <option value="" disabled selected>Select File</option>
         </select>
     </div>
     <div id="no-name-div" style="display:none;">
-        <h2 style="background-color: var(--secondarycolor);color:white;padding: 1rem;border-radius: 1rem;">Por favor,
-            selecciona un archivo</h2>
+        <h2 style="background-color: var(--secondarycolor);color:white;padding: 1rem;border-radius: 1rem;">Please,
+            select a file</h2>
         <ul id="file-list"></ul>
     </div>
 
@@ -37,27 +36,23 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.2/markdown-it.min.js"></script>
     <script>
-        // Obtiene el valor del parámetro "name" de la URL
         const params = new URLSearchParams(window.location.search);
         const nombre = params.get('name');
-        document.title = nombre ? `Ver Nota | ${nombre}` : "Ver Nota";
+        document.title = nombre ? `Open Note | ${nombre}` : "Open Note";
 
         if (!nombre) {
             const mdContent = document.getElementById('markdown-content');
             mdContent.style.display = 'none';
-            // Si no se proporciona "name", muestra el DIV con el mensaje
-            // Realiza una solicitud GET para obtener la lista de archivos disponibles
             fetch(`/view`)
                 .then(response => {
                     if (response.ok) {
-                        return response.json(); // Parsea la respuesta JSON
+                        return response.json();
                     } else {
-                        throw new Error('Error al obtener la lista de archivos');
+                        throw new Error('Error getting list of files');
                     }
                 })
                 .then(data => {
                     const fileList = document.getElementById('file-list');
-                    // Recorre la lista de archivos y crea elementos de lista para cada uno
                     data.forEach(archivo => {
                         const li = document.createElement('li');
                         const a = document.createElement('a');
@@ -66,8 +61,8 @@
                         li.appendChild(a);
                         fileList.appendChild(li);
                     });
-                        const noNameDiv = document.getElementById('no-name-div');
-                        noNameDiv.style.display = 'block';
+                    const noNameDiv = document.getElementById('no-name-div');
+                    noNameDiv.style.display = 'block';
 
 
                 })
@@ -75,20 +70,17 @@
                     console.error('Error:', error.message);
                 });
         } else {
-            // Si se proporciona "name", realiza la solicitud GET para obtener y mostrar el contenido
             fetch(`/stream/${nombre}`)
                 .then(response => {
                     if (response.ok) {
-                        return response.json(); // Parsea la respuesta JSON
+                        return response.json();
                     } else {
-                        throw new Error('Error al obtener el contenido');
+                        throw new Error('Error getting content');
                     }
                 })
                 .then(data => {
                     const md = window.markdownit();
                     const markdownContent = document.getElementById('markdown-content');
-
-                    // Renderiza el contenido recibido en el elemento con id 'markdown-content'
                     markdownContent.innerHTML = md.render(data.contenido);
                     const markdownContainer = document.getElementById('markdown-content')
                     markdownContainer.style.display = 'block';
@@ -99,14 +91,11 @@
         }
 
         function redirectToHome() {
-            window.location.href = "/"; // Cambia la URL a la página de inicio
+            window.location.href = "/";
         }
         function initializePage() {
-            // Obtener una referencia al dropdown y al textarea
             const fileDropdown = document.getElementById('fileDropdown');
             const markdownInput = document.getElementById('markdown-input');
-
-            // Cargar la lista de archivos disponibles en el dropdown
             fetch('/view')
                 .then(response => response.json())
                 .then(files => {
@@ -120,14 +109,10 @@
                 .catch(error => {
                     console.error('Error al cargar la lista de archivos:', error);
                 });
-
-            // Función para cargar el contenido del archivo seleccionado en el textarea
             function loadFileContent() {
                 const selectedFileName = fileDropdown.value;
-                window.location.href= `/ver?name=${selectedFileName}`;
+                window.location.href = `/ver?name=${selectedFileName}`;
             }
-
-            // Asignar la función loadFileContent() al evento onchange del dropdown
             fileDropdown.addEventListener('change', loadFileContent);
         }
         initializePage();
