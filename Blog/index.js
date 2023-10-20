@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const fs = require("fs");
-const port = 3100;
+const port = 80;
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 
